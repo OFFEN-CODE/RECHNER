@@ -1,0 +1,198 @@
+<html lang="en">
+<head>
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>YHOOO</title>
+  <style>
+    body {
+      background: #f0f0f3;
+     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px #cbcbcb, -10px -10px 20px #ffffff;
+      padding: 20px;
+      width: 320px;
+ /*CSS flex, Cernter Stock */  
+           display: flex;
+      flex-direction: column;
+    }
+
+    .display {
+      background: #e0e0e0;
+      height: 70px;
+      font-size: 2rem;
+      text-align: right;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: inset 2px 2px 5px #bebebe, inset -2px -2px 5px #ffffff;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+  
+    button {
+      padding: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 15px;
+      background: #f1f1f1;
+      box-shadow: 5px 5px 10px #ccc, -5px -5px 10px #fff;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+        touch-action: manipulation;
+      }
+/*hover effect */
+    button:hover {
+      background: #e4e4e4;
+      transform: scale(1.07);
+    }
+      button::after{
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 100%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+/*ripple effect*/
+    button:active::after {
+      width: 200%;
+      height: 200%;}
+   
+       .equal {
+      background: #4caf50;
+      color: white;
+    }
+
+    .clear {
+      background: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+    <mark>
+<!-- position: absolute; OUTOF CSS flex   NEW LOCATION -->
+    <abbr title= "Farnoud Shourabi" style=" color:dark; font-size:45px; position: absolute; top: 10px; left: 10px;">&copy;
+    </addr>
+    </mark>
+
+ <div class="calculator">
+ 
+<!-- بخاطر input که دیزاین رو بهم میریزه  از این استفاده کردمتا بعد از تاچ کاربر فوکس به input بره. -->
+  
+  <div class="display" id="display"         onclick="focusHiddenInput()">ENTER ANY     NUMBER</div>
+  <input 
+    type="text" 
+    id="hiddenInput" 
+    inputmode="numeric" 
+    autocomplete="off"
+    style="position: absolute; left: -9999px;       width: 1px; height: 1px; opacity: 0;" 
+    oninput="updateDisplay(this.value)" />
+    
+    <div class="buttons">
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button class="clear">del</button>
+
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+         <button>&divide;</button>
+
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+       <button>&times;</button>
+
+     <button class="equal">=</button>
+    <button>0</button>
+   <button>-</button>
+      <button>+</button>
+
+   </div>
+  </div>
+    <script>  
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('button');
+    let currentInput = '';
+    let firstInput = true;
+//dot notaion
+  
+//نکته لعنتی مهم اینجا رو نگذاشته بودم که دکمه ها کار نمیکرد!!!
+  buttons.forEach(button => { 
+ ['click', 'touchstart'].forEach(evt => {
+  button.addEventListener(evt, function (e) {
+    e.preventDefault();
+
+        const value = button.textContent;
+
+        if (value === 'del') {
+          currentInput = '';
+          firstInput = true;
+          display.textContent = 'enter any number:';
+        } else if (value === '=') {
+          try {
+            currentInput = 
+//error cell
+          eval(currentInput).toString();
+//dot notaion            
+            display.textContent = currentInput;
+          } catch {
+            display.textContent = 'ERRORE';
+            currentInput = '';
+          }
+        } else {
+          if (firstInput) {
+            currentInput = '';
+            firstInput = false;
+          }
+// SPICAL INFORM;*/         
+          if (value === '×') {
+          currentInput += '*';}
+          else if (value === '÷') {
+          currentInput += '/';}
+          else {
+          currentInput += value;
+          }
+//dot notaion
+          display.textContent = currentInput;
+        }
+      });
+     });
+    });
+
+               function focusHiddenInput() {
+  document.getElementById('hiddenInput').focus();
+        }
+
+function updateDisplay(value) {
+  document.getElementById('display').innerText = value;
+        }
+
+
+</script>
+
+
+</body>
+</html>
